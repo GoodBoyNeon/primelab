@@ -21,13 +21,13 @@ pub fn get_primality_probability(n: u32, iterations: u32) -> f64 {
   let signed_n = n.into();
 
   for _i in 0..iterations {
-    let a = rand::rng().random_range(2..(n - 1));
+    let a = rand::rng().random_range(2..(n - 1)); /* n > 4 always due to base cases */
     let b0 = mod_exp(a.into(), m, signed_n);
 
-    if b0 != -1 && b0 != 1 {
+    if b0 != signed_n - 1 && b0 != 1 {
       let b = bn(b0, signed_n, k);
 
-      if b != -1 {
+      if b != signed_n - 1 {
         return 0.0;
       }
     }
@@ -47,7 +47,7 @@ fn mod_exp(x: i64, n: u32, m: i64) -> i64 {
 }
 
 fn bn(b: i64, m: i64, k: u32) -> i64 {
-  if k == 0 || b == 1 || b == -1 {
+  if k == 0 || b == 1 || b == m - 1 {
     b
   } else {
     let bnext = mod_exp(b, 2, m);
