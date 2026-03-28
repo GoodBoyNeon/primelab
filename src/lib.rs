@@ -12,7 +12,7 @@ pub fn get_primality_probability(n: u32, iterations: u32) -> f64 {
   if n == 2 || n == 3 {
     return 1.0;
   }
-  if n % 2 == 0 {
+  if n.is_multiple_of(2) {
     return 0.0;
   }
 
@@ -32,7 +32,7 @@ pub fn get_primality_probability(n: u32, iterations: u32) -> f64 {
       }
     }
   }
-  return 1.0 - (0.25f64).powi(iterations as i32);
+  1.0 - (0.25f64).powi(iterations as i32)
 }
 
 fn mod_exp(x: i64, n: u32, m: i64) -> i64 {
