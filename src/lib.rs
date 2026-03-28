@@ -6,7 +6,7 @@ use rand::RngExt;
 #[napi]
 pub fn get_primality_probability(n: u32, iterations: u32) -> f64 {
   // Base cases
-  if n == 1 {
+  if n < 2 {
     return -1.0;
   }
   if n == 2 || n == 3 {
