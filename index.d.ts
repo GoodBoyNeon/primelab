@@ -3,3 +3,5 @@
 export declare function fermat(n: number, iterations: number): number
 
 export declare function millerRabin(n: number, iterations: number): number
+
+export declare function sieve(n: number): Array<number>
