@@ -1,5 +1,6 @@
 use rand::RngExt;
 
+use crate::primality::util::base_cases;
 use crate::utils::arithmetic::decompose_factors;
 use crate::utils::arithmetic::mod_exp;
 
@@ -13,15 +14,8 @@ fn bn(b: i64, m: i64, k: u32) -> i64 {
 }
 
 pub fn test(n: u32, iterations: u32) -> f64 {
-  // Base cases
-  if n < 2 {
-    return -1.0;
-  }
-  if n == 2 || n == 3 {
-    return 1.0;
-  }
-  if n.is_multiple_of(2) {
-    return 0.0;
+  if let Some(result) = base_cases(n) {
+    return result;
   }
 
   let (k, m) = decompose_factors(n);
