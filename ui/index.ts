@@ -1,4 +1,4 @@
-import { millerRabin, fermat } from '../index.js'
+import { millerRabin, fermat, sieve } from '../index.js'
 import yargs from 'yargs'
 import { hideBin } from 'yargs/helpers'
 
@@ -70,6 +70,20 @@ cli
           break
         }
       }
+    },
+  )
+  .command(
+    'sieve <n>',
+    'Generate a list prime numbers upto n using the sieve of Eratosthenes!',
+    (yargs) =>
+      yargs.positional('n', {
+        type: 'number',
+        demandOption: true,
+        describe: 'The upper bound, inclusive.',
+      }),
+    (argv) => {
+      const { n } = argv
+      console.log(sieve(n).join('\n'))
     },
   )
   .demandCommand(1)
