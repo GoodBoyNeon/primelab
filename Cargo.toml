@@ -3,7 +3,7 @@
 authors = ["Sushant Ray <contact@neon.is-a.dev>"]
 edition = "2021"
 name = "primelab"
-version = "0.1.0-alpha.3"
+version = "0.1.0-alpha.4"
 
 [lib]
 crate-type = ["cdylib"]
