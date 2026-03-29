@@ -1,4 +1,4 @@
-import { getPrimalityProbability } from '../index.js'
+import { millerRabin } from '../index.js'
 import yargs from 'yargs'
 import { hideBin } from 'yargs/helpers'
 
@@ -42,7 +42,7 @@ cli
       switch (algorithm) {
         case 'miller-rabin': {
           const MAX_SAFE_INPUT = 3_037_000_499
-          const probability = getPrimalityProbability(number, iterations)
+          const probability = millerRabin(number, iterations)
 
           if (number > MAX_SAFE_INPUT) {
             console.log(`Error: ${number} exceeds the maximum supported value of ${MAX_SAFE_INPUT}`)

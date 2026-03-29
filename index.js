@@ -557,4 +557,4 @@ if (!nativeBinding) {
 }
 
 module.exports = nativeBinding
-module.exports.getPrimalityProbability = nativeBinding.getPrimalityProbability
+module.exports.millerRabin = nativeBinding.millerRabin
