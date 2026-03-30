@@ -2,6 +2,10 @@
 /* eslint-disable */
 export declare function fermat(n: number, iterations: number): number
 
+export declare function getPrimeFactors(n: number): Array<number>
+
+export declare function getPrimeFactorsWithPrime(n: number, prime: Uint32Array): Array<number>
+
 export declare function millerRabin(n: number, iterations: number): number
 
 export declare function sieve(n: number): Array<number>

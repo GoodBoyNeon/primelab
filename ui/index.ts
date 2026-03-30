@@ -1,4 +1,4 @@
-import { millerRabin, fermat, sieve } from '../index.js'
+import { millerRabin, fermat, sieve, getPrimeFactors } from '../index.js'
 import yargs from 'yargs'
 import { hideBin } from 'yargs/helpers'
 
@@ -84,6 +84,52 @@ cli
     (argv) => {
       const { n } = argv
       console.log(sieve(n).join('\n'))
+    },
+  )
+  .command(
+    'factorize <n>',
+    'Get the prime factors of n',
+    (yargs) =>
+      yargs
+        .positional('n', {
+          type: 'number',
+          describe: 'The number to factorize',
+          demandOption: true,
+        })
+        .option('display', {
+          alias: ['d'],
+          type: 'string',
+          choices: ['default', 'compact', 'raw'],
+          default: 'default',
+          describe: 'Choose the format of the factors',
+        }),
+    (argv) => {
+      const { n, display } = argv
+
+      const factors = getPrimeFactors(n)
+
+      switch (display) {
+        case 'default':
+          console.log(factors.join(' × '))
+          break
+        case 'compact':
+          let str = ''
+          let i = 0
+          while (i < factors.length) {
+            let step = 0
+            while (factors[i + step] === factors[i]) {
+              step += 1
+            }
+            if (step > 1) str += `${factors[i]}^${step} × `
+            else str += `${factors[i]} × `
+            i += step
+          }
+          console.log(str.trim().slice(0, str.length - 2))
+          break
+        case 'raw':
+          console.log(factors)
+          break
+      }
     },
   )
   .demandCommand(1)
