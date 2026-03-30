@@ -1,6 +1,8 @@
 #![deny(clippy::all)]
 
 mod factorization;
+mod next_prime;
+mod prev_prime;
 mod primality;
 mod sieve;
 mod utils;
@@ -30,4 +32,14 @@ pub fn get_prime_factors(n: u32) -> Vec<u32> {
 #[napi]
 pub fn get_prime_factors_with_prime(n: u32, prime: &[u32]) -> Vec<u32> {
   factorization::with_sieve::factorize_with_sieve(n, prime)
+}
+
+#[napi]
+pub fn get_next_prime(n: u32) -> u32 {
+  next_prime::next_prime(n)
+}
+
+#[napi]
+pub fn get_prev_prime(n: u32) -> u32 {
+  prev_prime::prev_prime(n)
 }

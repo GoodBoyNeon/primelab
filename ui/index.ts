@@ -1,4 +1,12 @@
-import { millerRabin, fermat, sieve, getPrimeFactors, getPrimeFactorsWithPrime } from '../index.js'
+import {
+  millerRabin,
+  fermat,
+  sieve,
+  getPrimeFactors,
+  getPrimeFactorsWithPrime,
+  getNextPrime,
+  getPrevPrime,
+} from '../index.js'
 import yargs from 'yargs'
 import { hideBin } from 'yargs/helpers'
 
@@ -136,6 +144,34 @@ cli
           console.log(factors)
           break
       }
+    },
+  )
+  .command(
+    'next-prime <n>',
+    'Get the prime number after n',
+    (yargs) =>
+      yargs.positional('n', {
+        type: 'number',
+        describe: 'The value of n',
+        demandOption: true,
+      }),
+    (argv) => {
+      const { n } = argv
+      console.log(getNextPrime(n))
+    },
+  )
+  .command(
+    'prev-prime <n>',
+    'Get the prime number before n',
+    (yargs) =>
+      yargs.positional('n', {
+        type: 'number',
+        describe: 'The value of n',
+        demandOption: true,
+      }),
+    (argv) => {
+      const { n } = argv
+      console.log(getPrevPrime(n))
     },
   )
   .demandCommand(1)
