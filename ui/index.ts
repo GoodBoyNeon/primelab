@@ -1,4 +1,4 @@
-import { millerRabin, fermat, sieve, getPrimeFactors } from '../index.js'
+import { millerRabin, fermat, sieve, getPrimeFactors, getPrimeFactorsWithPrime } from '../index.js'
 import yargs from 'yargs'
 import { hideBin } from 'yargs/helpers'
 
@@ -102,11 +102,17 @@ cli
           choices: ['default', 'compact', 'raw'],
           default: 'default',
           describe: 'Choose the format of the factors',
+        })
+        .option('prime', {
+          type: 'array',
+          description: 'Custom prime number set if needed. Note that the program uses sieve list of prime by default.',
         }),
     (argv) => {
-      const { n, display } = argv
-
-      const factors = getPrimeFactors(n)
+      const { n, display, prime } = argv
+      const factors =
+        !prime || prime.length === 0
+          ? getPrimeFactors(n)
+          : getPrimeFactorsWithPrime(n, new Uint32Array(prime.map((s) => Number(s))))
 
       switch (display) {
         case 'default':
