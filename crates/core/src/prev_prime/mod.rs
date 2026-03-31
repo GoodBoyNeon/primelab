@@ -1,4 +1,4 @@
-use crate::miller_rabin;
+use crate::primality::miller_rabin;
 
 /* returns 0 if no previous prime exists [n <= 2] */
 pub fn prev_prime(n: u32) -> u32 {
@@ -12,7 +12,7 @@ pub fn prev_prime(n: u32) -> u32 {
     num -= 1;
   }
 
-  while miller_rabin(num, 15) < 0.99 {
+  while miller_rabin::test(num, 15) < 0.99 {
     num -= 2;
     if num < 2 {
       return 0;

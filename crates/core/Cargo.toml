@@ -1,0 +1,12 @@
+[package]
+authors = ["Sushant Ray <contact@neon.is-a.dev>"]
+edition = "2021"
+name    = "primelab-core"
+version = "0.2.0-alpha.0"
+
+[lib]
+crate-type = ["rlib"]
+
+[dependencies]
+num-bigint = "0.4"
+rand       = "0.10.0"

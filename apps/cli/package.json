@@ -1,0 +1,9 @@
+{
+  "name": "primelab-cli",
+  "version": "0.2.0-alpha.0",
+  "type": "module",
+  "dependencies": {
+    "primelab-bindings-napi": "workspace:*",
+    "yargs": "^18.0.0"
+  }
+}

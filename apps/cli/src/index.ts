@@ -6,7 +6,7 @@ import {
   getPrimeFactorsWithPrime,
   getNextPrime,
   getPrevPrime,
-} from '../index.js'
+} from 'primelab-bindings-napi'
 import yargs from 'yargs'
 import { hideBin } from 'yargs/helpers'
 

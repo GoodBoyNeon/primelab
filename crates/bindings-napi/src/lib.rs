@@ -1,13 +1,10 @@
 #![deny(clippy::all)]
-
-mod factorization;
-mod next_prime;
-mod prev_prime;
-mod primality;
-mod sieve;
-mod utils;
-
 use napi_derive::napi;
+use primelab_core::factorization;
+use primelab_core::next_prime;
+use primelab_core::prev_prime;
+use primelab_core::primality;
+use primelab_core::sieve;
 
 #[napi]
 pub fn miller_rabin(n: u32, iterations: u32) -> f64 {
