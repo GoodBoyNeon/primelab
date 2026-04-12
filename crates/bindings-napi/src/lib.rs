@@ -1,42 +1,65 @@
 #![deny(clippy::all)]
 use napi_derive::napi;
-use primelab_core::factorization;
-use primelab_core::next_prime;
-use primelab_core::prev_prime;
-use primelab_core::primality;
-use primelab_core::sieve;
+use primelab_core::{
+  factorize, factorize_with_sieve, next_prime, prev_prime, sieve_of_eratosthenes, test_primality,
+  test_primality_with,
+};
+use primelab_core::{PrimalityAlgorithm, PrimalityOptions};
+
+// #[napi]
+// pub fn miller_rabin(n: u32, iterations: u32) -> f64 {
+//   primality::miller_rabin::test(n, iterations)
+// }
+//
+// #[napi]
+// pub fn fermat(n: u32, iterations: u32) -> f64 {
+//   primality::fermat::test(n, iterations)
+// }
 
 #[napi]
-pub fn miller_rabin(n: u32, iterations: u32) -> f64 {
-  primality::miller_rabin::test(n, iterations)
+pub fn is_prime(n: u32) -> f64 {
+  is_prime_with(n, PrimalityAlgorithm::MillerRabin, 15)
 }
-
-#[napi]
-pub fn fermat(n: u32, iterations: u32) -> f64 {
-  primality::fermat::test(n, iterations)
+pub fn is_prime_with(n: u32, algorithm: PrimalityAlgorithm, iterations: u32) -> f64 {
+  let res = test_primality_with(
+    n,
+    PrimalityOptions {
+      algorithm,
+      iterations,
+    },
+  );
+  if res.is_prime() {
+    1.0
+  } else if res.is_composite() {
+    0.0
+  } else if res.is_probable_prime() && res.confidence().is_some() {
+    res.confidence().unwrap_or(0.0)
+  } else {
+    0.0
+  }
 }
 
 #[napi]
 pub fn sieve(n: u32) -> Vec<u32> {
-  sieve::sieve_of_eratosthenes(n)
+  sieve_of_eratosthenes(n)
 }
 
 #[napi]
 pub fn get_prime_factors(n: u32) -> Vec<u32> {
-  factorization::factorize(n)
+  factorize(n)
 }
 
 #[napi]
 pub fn get_prime_factors_with_prime(n: u32, prime: &[u32]) -> Vec<u32> {
-  factorization::with_sieve::factorize_with_sieve(n, prime)
+  factorize_with_sieve(n, prime)
 }
 
 #[napi]
 pub fn get_next_prime(n: u32) -> u32 {
-  next_prime::next_prime(n)
+  next_prime(n)
 }
 
 #[napi]
 pub fn get_prev_prime(n: u32) -> u32 {
-  prev_prime::prev_prime(n)
+  prev_prime(n)
 }

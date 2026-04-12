@@ -8,5 +8,6 @@ version = "0.2.0-alpha.0"
 crate-type = ["rlib"]
 
 [dependencies]
+clap = "4.6.0"
 num-bigint = "0.4"
 rand       = "0.10.0"
