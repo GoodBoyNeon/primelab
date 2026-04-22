@@ -1,8 +1,9 @@
 [package]
-name = "cli"
+name = "primelab-cli"
 version = "0.3.0-alpha.1"
-edition = "2024"
+edition = "2021"
 
 [dependencies]
 clap = { version = "4.6.0", features = ["derive"] }
 primelab-core = { path = "../../crates/core/" }
+primelab-api = { path = "../../crates/api/" }

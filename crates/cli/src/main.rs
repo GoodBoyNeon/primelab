@@ -1,8 +1,10 @@
 use clap::{Parser, Subcommand, ValueEnum};
-use primelab_core::{
-  PrimalityAlgorithm, PrimalityOptions, factorize, next_prime, prev_prime, sieve_of_eratosthenes,
-  test_primality_with,
-};
+use primelab_api::{Command, CommandResult};
+// use primelab_core::{
+//   PrimalityAlgorithm, PrimalityOptions, factorize, next_prime, prev_prime, sieve_of_eratosthenes,
+// };
+use primelab_api::types::primality::{PrimalityAlgorithm, PrimalityOptions};
+use primelab_api::Command::IsPrimeWith;
 
 #[derive(Parser)]
 #[command(
@@ -69,28 +71,39 @@ fn main() {
       algorithm,
       iterations,
     } => {
-      let res = test_primality_with(
+      let res: CommandResult = IsPrimeWith {
         n,
-        PrimalityOptions {
+        opts: PrimalityOptions {
           algorithm,
           iterations,
         },
-      );
+      }
+      .execute();
 
-      if res.is_definitely_prime() {
+      let primality = match res {
+        CommandResult::Primality(p) => p,
+        _ => unreachable!(),
+      };
+
+      if primality.is_prime() {
         println!("{} is a prime number.", n);
-      } else if res.is_composite() {
+      } else if primality.is_composite() {
         println!("{} is a composite number.", n);
-      } else if res.is_probable_prime() {
+      } else if primality.is_probable_prime() {
         println!(
           "{} is probably prime. Confidence: {:0.4}%",
           n,
-          res.confidence().unwrap() * 100.0
+          primality.confidence().unwrap() * 100.0
         )
       }
     }
     Commands::Factorize { n, display } => {
-      let factors = factorize(n);
+      let res = Command::Factorize { n }.execute();
+
+      let factors = match res {
+        CommandResult::Factorization(f) => f,
+        _ => unreachable!(),
+      };
 
       match display {
         FactorizeFormat::Default => {
@@ -121,7 +134,6 @@ fn main() {
           println!("{}", str.join(" × "))
         }
         FactorizeFormat::Raw => {
-          let factors = factorize(n);
           for f in &factors {
             println!("{}", f);
           }
@@ -129,13 +141,25 @@ fn main() {
       }
     }
     Commands::NextPrime { n } => {
-      println!("{}", next_prime(n));
+      let res = match (Command::NextPrime { n }.execute()) {
+        CommandResult::NextPrime(p) => p,
+        _ => unreachable!(),
+      };
+      println!("{}", res);
     }
     Commands::PrevPrime { n } => {
-      println!("{}", prev_prime(n));
+      let res = match (Command::PrevPrime { n }.execute()) {
+        CommandResult::PrevPrime(p) => p,
+        _ => unreachable!(),
+      };
+      println!("{}", res);
     }
     Commands::Sieve { n } => {
-      let sieve = sieve_of_eratosthenes(n);
+      let sieve = match (Command::Sieve { n }.execute()) {
+        CommandResult::Sieve(s) => s,
+        _ => unreachable!(),
+      };
+
       println!(
         "{}",
         sieve
