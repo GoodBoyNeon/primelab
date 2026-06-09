@@ -1,22 +1,20 @@
-import { useState } from 'react'
-import { invoke } from '@tauri-apps/api/core'
+import { AppProvider } from './context/AppContext'
+import Sidebar from './components/Sidebar'
+import WorkArea from './components/WorkArea'
+import { ThemeProvider } from './context/ThemeProvider'
+import { SidebarProvider } from './components/ui/sidebar'
 
 export default function App() {
-  const [result, setResult] = useState<string>('')
-
-  async function test() {
-    const res = await invoke('is_prime', {
-      n: 17,
-      algorithm: 'MillerRabin',
-      iterations: 15,
-    })
-    setResult(JSON.stringify(res))
-  }
-
   return (
-    <div>
-      <button onClick={test}>Test</button>
-      <p>res:{result}</p>
-    </div>
+    <ThemeProvider>
+      <AppProvider>
+        <SidebarProvider>
+          <Sidebar />
+          <main className="flex-1 bg-background text-foreground flex flex-col">
+            <WorkArea />
+          </main>
+        </SidebarProvider>
+      </AppProvider>
+    </ThemeProvider>
   )
 }

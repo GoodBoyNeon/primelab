@@ -9,11 +9,6 @@ use primelab_api::{
 
 // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
 #[tauri::command]
-fn greet(name: &str) -> String {
-  format!("Hello, {}! You've been greeted from Rust!", name)
-}
-
-#[tauri::command]
 fn is_prime(n: u32, algorithm: PrimalityAlgorithm, iterations: u32) -> PrimalityResponse {
   let raw = match (IsPrimeWith {
     n,
@@ -30,6 +25,8 @@ fn is_prime(n: u32, algorithm: PrimalityAlgorithm, iterations: u32) -> Primality
 
   if raw.is_prime() {
     PrimalityResponse {
+      number: n,
+      iterations,
       is_prime: true,
       is_composite: false,
       is_probable_prime: true,
@@ -37,6 +34,8 @@ fn is_prime(n: u32, algorithm: PrimalityAlgorithm, iterations: u32) -> Primality
     }
   } else if raw.is_composite() {
     PrimalityResponse {
+      number: n,
+      iterations,
       is_prime: false,
       is_composite: true,
       is_probable_prime: false,
@@ -44,6 +43,8 @@ fn is_prime(n: u32, algorithm: PrimalityAlgorithm, iterations: u32) -> Primality
     }
   } else {
     PrimalityResponse {
+      number: n,
+      iterations,
       is_prime: false,
       is_composite: false,
       is_probable_prime: true,
@@ -56,7 +57,7 @@ fn is_prime(n: u32, algorithm: PrimalityAlgorithm, iterations: u32) -> Primality
 pub fn run() {
   tauri::Builder::default()
     .plugin(tauri_plugin_opener::init())
-    .invoke_handler(tauri::generate_handler![greet, is_prime])
+    .invoke_handler(tauri::generate_handler![is_prime])
     .run(tauri::generate_context!())
     .expect("error while running tauri application");
 }

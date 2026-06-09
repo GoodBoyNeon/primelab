@@ -1,5 +1,5 @@
 [package]
-name = "workbench"
+name = "primelab-workbench"
 version = "0.3.0-alpha.1"
 edition = "2021"
 
